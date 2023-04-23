@@ -3,19 +3,43 @@ const newTaskInput = document.getElementById('input-task');
 const addTaskButton = document.getElementById('add-task');
 const todoListContainer = document.getElementById('todo-list');
 
-function onAddTaskClicked(e){
+ let templateElement = document.getElementById("list-item-template");
+   let template = templateElement.innerHTML;
+
+
+   function onAddTaskClicked(event){
    //grab the text entered by a user in the input task textbox
    //and add it as a list item in ul
 
    let taskName = newTaskInput.value;
    newTaskInput.value ="";
    let li = document.createElement("li")
-   li.appendChild(document.createTextNode(taskName));
-   todoListContainer.appendChild(li);
+   let taskHTML = template.replace("<!-- TASK_NAME -->", taskName);
+   todoListContainer.insertAdjacentHTML('beforeend', taskHTML);
+
+   function onTodolistClicked(event) {
+     
+      let targetElement = event.target;
+  
+      while (!targetElement.classList.contains("task")) {
+          targetElement = targetElement.parentElement;
+      }
+  
+      let checkbox = targetElement.querySelector(".checkbox");
+  
+
+      if (checkbox.checked) {
+          targetElement.classList.add("completed");
+      } else {
+          targetElement.classList.remove("completed");
+      }
+  }
+   //li.appendChild(document.createTextNode(taskName));
+   //todoListContainer.appendChild(li);
 
    //('taskName').append('<input type="checkbox" name="myCheckbox" />');
 
-   function add
+  
    // todoListContainer.innerHTML=(`<li>${taskName}</li>`);
 
    // todoListContainer.insertAdjacentHTML('afterbegin', taskName);
@@ -33,3 +57,4 @@ function onAddTaskClicked(e){
 
 //step3
 addTaskButton.addEventListener('click', onAddTaskClicked);
+todoListContainer.addEventListener('click', onTodolistClicked);
